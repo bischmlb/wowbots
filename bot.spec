@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['bot.py'],
-             pathex=['C:\\Users\\bisch\\Desktop\\fishbot\\bot'],
+             pathex=['C:\\Program Files (x86)\\bischoffsoft-wowbots'],
              binaries=[],
              datas=[],
              hiddenimports=[],

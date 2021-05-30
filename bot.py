@@ -20,13 +20,16 @@ from infi.systray import SysTrayIcon
 from tkinter import *
 from datetime import datetime
 
+
 knownUser = {
 "admin": "admin",
-"mlb2203": "lyhneb2203962203",
-"fiskeguden": "qweasd123"
 }
 
 loginFail = False
+
+
+    
+
 
 #For at kunne execute multiple commands i tkinter ..
 def combine_funcs(*funcs):
@@ -86,8 +89,8 @@ def setFlagExit():
 def __initGUI__():
     frame = tkinter.Tk()
 
-    w = 400
-    h = 250
+    w = 600
+    h = 700
 
     ws = frame.winfo_screenwidth()
     hs = frame.winfo_screenheight()
@@ -100,24 +103,40 @@ def __initGUI__():
     frame.title('Bisches BOTS - Vælg en bot')
     frame.iconbitmap(r'fish_bot.ico')
     # label1 = Label(frame, text="(OBS: Fungerer bedst i windowed mode 800x600)", font=("Arial", 8)) - Man kan ikke reframe wow mere.
-    label1.pack()
+    # label1.pack()
 
-    ansvarTxt = Label(frame, text="Disclaimer: Alt bruges på eget ansvar.", font=("Arial", 4))
-    ansvarTxt.pack()
+    ansvarTxt = Label(frame, text="Disclaimer: Alt bruges på eget ansvar.", font=("Arial", 8)).pack(side=TOP)
+    separator1 = Label(frame, justify=LEFT, font=("Arial", 12), text="________________________________________").pack()
+
+
+    
+    title1 = Label(frame, justify=LEFT, font=("Arial", 12), text="Fiskermanden 1.0").pack(pady=30)
+    title2 = Label(frame, justify=LEFT, font=("Arial", 10), text="Scanner efter watersplash, og klikker.").pack()
+    label2 = Label(frame, justify=LEFT, font=("Arial", 8), text=" 1. equip fishing pole \n 2. sæt 'Fishing' som nummer 1 skill i din action bar \n 3. toggle wow UI (ALT + Z) \n 4. zoom helt ind(!!) \n 5. pause/unpause ved klik på ikon nede til højre \n").pack()
 
     startFishing = Button(frame,
                     font=("arial", 14),
                     command=combine_funcs(frame.destroy, runBot),
                     relief=SOLID,
-                    text="Fisk").pack(side=TOP, padx=0, pady=40)
-    avoidAfk = Button(frame,
+                    height=2,
+                    width=8,
+                    text="Start").pack(side=TOP, padx=0, pady=40)
+
+    separator2 = Label(frame, justify=LEFT, font=("Arial", 12), text="________________________________________").pack()
+
+    title3 = Label(frame, justify=LEFT, font=("Arial", 12), text="Avoid AFK").pack(pady=30)
+    title4 = Label(frame, justify=LEFT, font=("Arial", 10), text="Undgå at blive flagged som AFK").pack()
+    label3 = Label(frame, justify=LEFT, font=("Arial", 8), text="Brugbar under nye releases, så du kan gå AFK uden at skulle sidde i login-que efter. \nDet er det krav, at dit hop-bind er 'space'").pack()
+
+                    
+    startAvoidAfk = Button(frame,
                     font=("arial", 14),
                     command=combine_funcs(frame.destroy, avoidAfk),
                     relief=SOLID,
-                    text="no AFK").pack(side=TOP, padx=0, pady=60)
+                    height=2,
+                    width=8,
+                    text="Start").pack(side=TOP, padx=0, pady=40)
 
-    label2 = Label(frame, justify=LEFT, font=("Arial", 8), text=" 1. equip fishing pole \n 2. sæt 'Fishing' som nummer 1 skill i din action bar \n 3. toggle wow UI (ALT + Z) \n 4. zoom helt ind(!!) \n 5. pause/unpause ved klik på ikon nede til højre \n")
-    label2.pack()
 
 #    forsøg på at importere et billede til gui ..
 #    load = Image.open("wow-fish-bot-area.png")
@@ -273,11 +292,8 @@ def avoidAfk():
     global start
     start = time.time()
     flag_exit = False
-    lastx = 0
-    lasty = 0
+    hopCount = 0
     is_block = False
-    new_cast_time = 0
-    recast_time = 40
     wait_mes = 0
     
     info = ""
@@ -330,22 +346,18 @@ def avoidAfk():
                 #Hvis is_block = False hopper vi for at prevente afk...
                 #Vi sætter is_block til false, og hopper først igen  om 250s.
                 if is_block == False:
-                    lastx = 0
-                    lasty = 0
-                    pyautogui.press('space', presses=3)
+                    pyautogui.press('space')
+                    hopCount += 1
                     info = printTime() + "_BOT_ >> Hopper ..."
                     print(info)
+                    print(printTime() + "_BOT_ >> Undgik AFK " + str(hopCount) + " gange")
                     logging.info(info)
-                    new_cast_time = time.time()
                     is_block = True
-                    time.sleep(250) # Hop for hvert 250s
+                    time.sleep(280) # Hop for hvert 280s. Auto AFK = 300 (5min)
                 #Opsætning af masken hvor vi scanner for splash effect ..
                 else:
                     is_block = False
 
-                    if time.time() - new_cast_time > recast_time:
-                        # print("New cast if something wrong")
-                        is_block = False
             if cv2.waitKey(1) == 27:
                 break
         else:
@@ -377,7 +389,7 @@ def loginFrameCreate():
     loginFrame.title('Bisches BOTS - Login')
     loginFrame.iconbitmap(r'fish_bot.ico')
 
-    logintitle = Label(loginFrame, text="Fiskermanden Fishing-BOT", font=("arial", 14))
+    logintitle = Label(loginFrame, text="Bisches BOTS - Login", font=("arial", 14))
     logintitle.pack(side=TOP, padx=0, pady=10)
 
     global username
@@ -400,6 +412,9 @@ def loginFrameCreate():
     password.bind("<FocusIn>", lambda args: password.delete('0', 'end'))
     password.config(show="*")
     password.pack(side=TOP, padx=0, pady=0)
+    label2 = Label(loginFrame, text="Hvis du mangler en bruger, kontakt bisch på discord.", font=("arial", 10))
+    label2.pack(side=TOP, padx=0, pady=10)
+
 
     if loginFail == True:
         label1 = Label(loginFrame, text="forkert brugernavn/password, prøv igen", font=("arial", 10), fg="red")

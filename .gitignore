@@ -1,2 +1,6 @@
 # Exclude logfile
 bot_logfile.log
+
+# build files
+dist/
+build/
