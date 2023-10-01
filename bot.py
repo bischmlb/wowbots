@@ -116,7 +116,7 @@ def __initGUI__():
         "Arial", 12), text="________________________________________").pack()
 
     title1 = Label(frame, justify=LEFT, font=("Arial", 12),
-                   text="Fiskermanden 1.0").pack(pady=30)
+                   text="Fiskermanden 1.1").pack(pady=30)
     title2 = Label(frame, justify=LEFT, font=("Arial", 10),
                    text="Scanner efter watersplash, og klikker.").pack()
     label2 = Label(frame, justify=LEFT, font=(
@@ -229,18 +229,20 @@ def runBot():
                 time.sleep(5)
             # Hvis wow er det aktive vindue, påbegynder vi fishing
             else:
+
+                systray.update(hover_text=app)
+                rect = GetWindowRect(GetForegroundWindow())
+
                 # Check buff time left ...
                 # Use if > 10 minutes (600s)
                 ts_use_buff_new = time.time()
                 # If diff is more than 10 minutes, we should use buff
-                if ts_use_buff_new - ts_use_buff_old > 600:
+                if ts_use_buff_new - ts_use_buff_old > 620:
                     print("_BOT_ >> Prøver at bruge buff")
+                    time.sleep(6)
                     pyautogui.press('2')
                     time.sleep(6)
                     ts_use_buff_old = ts_use_buff_new
-
-                systray.update(hover_text=app)
-                rect = GetWindowRect(GetForegroundWindow())
 
                 # Hvis is_block = False kaster vi rod ...
                 # Vi sætter is_block til true så vi ikke kaster flere rods
@@ -482,7 +484,7 @@ def getUser():
         loginFrameCreate()
 
 
-##pyinstaller --windowed --icon=fish_bot.ico --onefile bot.py##
+##pyinstaller --icon=fish_bot.ico --onefile bot.py##
 if __name__ == "__main__":
     start = time.time()
 
