@@ -1,10 +1,11 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+
 block_cipher = None
 
 
 a = Analysis(['bot.py'],
-             pathex=['C:\\Program Files (x86)\\bischoffsoft-wowbots'],
+             pathex=['C:\\wowbots'],
              binaries=[],
              datas=[],
              hiddenimports=[],

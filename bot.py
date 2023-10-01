@@ -482,7 +482,7 @@ def getUser():
         loginFrameCreate()
 
 
-##pyinstaller.exe --windowed --icon=fish_bot.ico bot.py##
+##pyinstaller --windowed --icon=fish_bot.ico --onefile bot.py##
 if __name__ == "__main__":
     start = time.time()
 
