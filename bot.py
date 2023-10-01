@@ -189,6 +189,10 @@ def runBot():
                        icon_path=app_ico,
                        duration=5)
     #Bot kør
+
+
+    #Init state for buff time stamp.
+    ts_use_buff_old = 0
     #Hvis flag_exit = False kører vi i loop
     while flag_exit is False:
         if is_stop == False:
@@ -210,6 +214,15 @@ def runBot():
                 time.sleep(5)
             #Hvis wow er det aktive vindue, påbegynder vi fishing
             else:
+                #Check buff time left ...
+                #Use if > 10 minutes (600s)
+                ts_use_buff_new = time.time()
+                if ts_buff_new > 10:
+                    old_ts = new_ts
+                    pyautogui.press('2')
+                
+                
+
                 systray.update(hover_text=app)
                 rect = GetWindowRect(GetForegroundWindow())
 
